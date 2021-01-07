@@ -28,7 +28,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "robo_base.h"
 #include "Remote.h"
 /* USER CODE END Includes */
 
@@ -49,12 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t RxData[8];
-uint8_t TxData[8];
-
-Speed_System Speed;
-Pos_System Pos;
-RC_Ctl_t RC_Data;
+ROBO_BASE Base;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,18 +94,12 @@ int main(void)
   MX_CAN1_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
-	HAL_Delay(500);
-	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_0,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_1,GPIO_PIN_SET);
-	HAL_Delay(500);
   MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 	__HAL_TIM_CLEAR_FLAG(&htim2,TIM_IT_UPDATE);
 	HAL_TIM_Base_Start_IT(&htim2);
 	CAN_FilterConfig();
-	PID_Init(&Speed.Speed_PID,5,0,0,5000,0,5000,5000);
-	PID_Init(&Pos.Speed_PID,5,0,0,5000,0,5000,5000);
-	PID_Init(&Pos.Pos_PID,0.5,0,0,5000,0,5000,5000);
+	My_Base_Init(&Base);
 	__HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);
   /* USER CODE END 2 */
 

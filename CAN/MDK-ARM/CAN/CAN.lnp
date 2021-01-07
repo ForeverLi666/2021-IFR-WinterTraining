@@ -1,6 +1,7 @@
 --cpu=Cortex-M4.fp
 "can\startup_stm32f405xx.o"
 "can\remote.o"
+"can\robo_base.o"
 "can\main.o"
 "can\gpio.o"
 "can\can.o"
@@ -10,7 +11,6 @@
 "can\usart.o"
 "can\stm32f4xx_it.o"
 "can\stm32f4xx_hal_msp.o"
-"can\robo_base.o"
 "can\stm32f4xx_hal_can.o"
 "can\stm32f4xx_hal_rcc.o"
 "can\stm32f4xx_hal_rcc_ex.o"

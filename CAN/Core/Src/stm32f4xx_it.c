@@ -27,7 +27,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-#include "robo_base.h"
 #include "math.h"
 #include "Remote.h"
 /* USER CODE END TD */
@@ -45,17 +44,10 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 CAN_RxHeaderTypeDef RxMessage;
-extern uint8_t RxData[8];
-extern uint8_t TxData[8];
-extern uint8_t BUF[8];
-extern uint32_t Txmailbox;
-extern Speed_System Speed;
-extern Pos_System Pos;
-extern RC_Ctl_t RC_CtrlData;
-extern IWDG_HandleTypeDef hiwdg;
-//RC_Ctl_t RC_Data;
+uint8_t RxData[8];
+uint8_t TxData[8];
+uint16_t Motor_Num;
 uint8_t Rx_buffer[18];
-uint8_t Motor_State=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -69,12 +61,14 @@ uint8_t Motor_State=0;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+
+/* USER CODE BEGIN EV */
+extern ROBO_BASE Base;
+extern IWDG_HandleTypeDef hiwdg;
 extern CAN_HandleTypeDef hcan1;
 extern TIM_HandleTypeDef htim2;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern UART_HandleTypeDef huart1;
-/* USER CODE BEGIN EV */
-extern UART_RX_BUFFER Uart1_Rx;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -223,6 +217,7 @@ void CAN1_RX0_IRQHandler(void)
   /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
 	HAL_IWDG_Refresh(&hiwdg);
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&RxMessage,RxData);
+	Motor_Num=RxMessage.StdId;
   /* USER CODE END CAN1_RX0_IRQn 0 */
   HAL_CAN_IRQHandler(&hcan1);
   /* USER CODE BEGIN CAN1_RX0_IRQn 1 */
@@ -236,7 +231,7 @@ void CAN1_RX0_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-	My_Motor_control(&Speed,&Pos,RxData,TxData);
+	My_Motor_Analysis(&Base,Motor_Num);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */

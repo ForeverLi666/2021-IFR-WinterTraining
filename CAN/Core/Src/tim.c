@@ -33,9 +33,9 @@ void MX_TIM2_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 8400-1;
+  htim2.Init.Prescaler = 84-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 10000-1;
+  htim2.Init.Period = 1000-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)

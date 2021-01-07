@@ -16,6 +16,7 @@
 
 //---------变量声明部分-----------//
 ROBO_BASE Robo_Base;
+extern CAN_HandleTypeDef hcan1;
 CAN_HandleTypeDef hcan2;
 extern uint8_t RxData[8];
 extern uint8_t TxData[8];
@@ -593,23 +594,24 @@ void My_Base_Init(ROBO_BASE *Base)
 	PID_Init(&Base->Speed_MotorRF.Speed_PID,5,0,0,5000,0,5000,5000);
 	Base->Speed_MotorRB.Motor_Num=2;
 	PID_Init(&Base->Speed_MotorRB.Speed_PID,5,0,0,5000,0,5000,5000);
-	Base->Speed_MotorLB.Motor_Num=2;
+	Base->Speed_MotorLB.Motor_Num=3;
 	PID_Init(&Base->Speed_MotorLB.Speed_PID,5,0,0,5000,0,5000,5000);
 	
 }
-void My_Motor_Analysis(ROBO_BASE *Base,uint8_t Motor_Num)
+void My_Motor_Analysis(ROBO_BASE *Base,uint16_t Motor_Num)
 {
 	switch (Motor_Num)
 	{
-		case 0:
+		case 0x201:
 			My_Motor_control(&Base->Speed_MotorLF,&Base->Pos_MotorLF,RxData,TxData);
-		case 1:
+		case 0x202:
 			My_Motor_control(&Base->Speed_MotorRF,&Base->Pos_MotorRF,RxData,TxData);
-		case 2:
+		case 0x203:
 			My_Motor_control(&Base->Speed_MotorRB,&Base->Pos_MotorRB,RxData,TxData);
-		case 3:
+		case 0x204:
 			My_Motor_control(&Base->Speed_MotorLB,&Base->Pos_MotorLB,RxData,TxData);
 		default :
 			break;
 	}
 }
+

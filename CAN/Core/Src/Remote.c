@@ -3,7 +3,7 @@
 
 UART_RX_BUFFER Uart1_Rx;
 extern UART_HandleTypeDef huart1;
-extern int16_t speed_data;
+extern uint16_t Motor_Num;
 RC_Ctl_t RC_CtrlData=
 {
 	{1024,1024,1024,1024,2,2},
@@ -80,13 +80,22 @@ void My_Motor_Tar(Speed_System *Speed,Pos_System *Pos)
 	switch (RC_CtrlData.rc.s1)
 	{
 		case 1:
-			Speed->Tar_Speed=(RC_CtrlData.rc.ch1-1024)*5;
-			if(Speed->Tar_Speed>3000)
+			switch (Motor_Num)
 			{
-				Speed->Tar_Speed=3000;
-			}else if(Speed->Tar_Speed<-3000)
-			{
-				Speed->Tar_Speed=-3000;
+				case 0x201:
+					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5-(RC_CtrlData.rc.ch1-1024)*5;
+					break;
+				case 0x202:
+					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5+(RC_CtrlData.rc.ch1-1024)*5;
+					break;
+				case 0x203:
+					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5-(RC_CtrlData.rc.ch1-1024)*5;
+					break;
+				case 0x204:
+					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5+(RC_CtrlData.rc.ch1-1024)*5;
+					break;
+				default:
+					break;
 			}
 			break;
 		case 2:
