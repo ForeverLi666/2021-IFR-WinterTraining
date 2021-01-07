@@ -130,8 +130,10 @@ void PID_Pos_Cal(Pos_System* Pos_Motor,uint8_t *Tx_msg);									//位置环系统PID
 
 void PID_Send(ROBO_BASE* Robo);																//PID发送函数
 void Send_To_Motor(CAN_HandleTypeDef *hcan,uint8_t* Tx_Data);								//CAN通信发送函数
-void My_Motor_Speed_Analysis(Speed_System* Speed,uint8_t *RxData);
-void My_Motor_Pos_Analysis(Pos_System *Pos,uint8_t *RxData);
+void My_Speed_Info_Analysis(Speed_System* Speed,uint8_t *RxData);
+void My_Pos_Info_Analysis(Pos_System *Pos,uint8_t *RxData);
+void My_Base_Init(ROBO_BASE *Base);
+void My_Motor_Analysis(ROBO_BASE *Base,uint8_t Motor_Num);
 //---------------------------------//
 #endif
 

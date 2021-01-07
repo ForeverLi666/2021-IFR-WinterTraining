@@ -10,13 +10,15 @@
 //版本:	1.0V
 
 //---------头文件引用部分---------//
-#include "robo_base.h"
+#include "Remote.h"
 #include "can.h"
 //--------------------------------//
 
 //---------变量声明部分-----------//
 ROBO_BASE Robo_Base;
 CAN_HandleTypeDef hcan2;
+extern uint8_t RxData[8];
+extern uint8_t TxData[8];
 //--------------------------------//
 
 //---------外部变量声明部分-------//
@@ -87,7 +89,7 @@ void BASE_Init(ROBO_BASE *Robo)
 //    case 0x203:P_Motor=&Robo->Pos_MotorRB;break;
 //    case 0x204:P_Motor=&Robo->Pos_MotorLB;break;
 //	default:break;
-//  }if(P_Motor!=NULL) Pos_Info_Analysis(&P_Motor->Info,RX_Data);
+//  }if(P_Motor!=NULL) Pos_Info_Analyqsis(&P_Motor->Info,RX_Data);
 //}
 
 //--------------------------------------------------------------------------------------------------//
@@ -462,8 +464,6 @@ void PID_Pos_Cal(Pos_System* Pos_Motor,uint8_t *Tx_msg)
 		Pos_Motor->Speed_PID.output = Pos_Motor->Speed_PID.output_max;
 	if(Pos_Motor->Speed_PID.output < -Pos_Motor->Speed_PID.output_max)
 		Pos_Motor->Speed_PID.output = -Pos_Motor->Speed_PID.output_max;
-	
-	Pos_Motor->Motor_Num=2;
 
 	
 	Tx_msg[Pos_Motor->Motor_Num*2]=((int16_t)Pos_Motor->Speed_PID.output)>>8;Tx_msg[Pos_Motor->Motor_Num*2+1]=(int16_t)Pos_Motor->Speed_PID.output;
@@ -510,8 +510,6 @@ void PID_Speed_Cal(Speed_System* Speed_Motor,uint8_t *Tx_msg)
 	if(Speed_Motor->Speed_PID.output < -Speed_Motor->Speed_PID.output_max)
 		Speed_Motor->Speed_PID.output = -Speed_Motor->Speed_PID.output_max;
 	
-	Speed_Motor->Motor_Num=2;
-	
 	Tx_msg[Speed_Motor->Motor_Num*2] = ((int16_t)Speed_Motor->Speed_PID.output)>>8;
 	Tx_msg[Speed_Motor->Motor_Num*2+1] = (int16_t)Speed_Motor->Speed_PID.output;
 }
@@ -549,7 +547,7 @@ void Send_To_Motor(CAN_HandleTypeDef *hcan,uint8_t* Tx_Data)
      Error_Handler();
   }
 }
-void My_Motor_Speed_Analysis(Speed_System *Speed,uint8_t *RxData)
+void My_Speed_Info_Analysis(Speed_System *Speed,uint8_t *RxData)
 {
 
 	Speed->Info.Angle=RxData[0];Speed->Info.Angle<<=8;Speed->Info.Angle|=RxData[1];
@@ -557,7 +555,7 @@ void My_Motor_Speed_Analysis(Speed_System *Speed,uint8_t *RxData)
 	Speed->Info.Current=RxData[4];Speed->Info.Current<<=8;Speed->Info.Current|=RxData[5];
 	Speed->Info.Temperature=RxData[6];
 }
-void My_Motor_Pos_Analysis(Pos_System *Pos,uint8_t *RxData)
+void My_Pos_Info_Analysis(Pos_System *Pos,uint8_t *RxData)
 {
 	int16_t Error;
 	Pos->Info.Angle=RxData[0];Pos->Info.Angle<<=8;Pos->Info.Angle|=RxData[1];
@@ -573,4 +571,45 @@ void My_Motor_Pos_Analysis(Pos_System *Pos,uint8_t *RxData)
 	}
 		Pos->Info.Last_Angle=Pos->Info.Angle;
 }
-
+void My_Base_Init(ROBO_BASE *Base)
+{
+	Base->Pos_MotorLF.Motor_Num=0;
+	PID_Init(&Base->Pos_MotorLF.Pos_PID,0.5,0,0,5000,0,5000,5000);
+	PID_Init(&Base->Pos_MotorLF.Speed_PID,5,0,0,5000,0,5000,5000);
+	Base->Pos_MotorRF.Motor_Num=1;
+	PID_Init(&Base->Pos_MotorRF.Pos_PID,0.5,0,0,5000,0,5000,5000);
+	PID_Init(&Base->Pos_MotorRF.Speed_PID,5,0,0,5000,0,5000,5000);
+	Base->Pos_MotorRB.Motor_Num=2;
+	PID_Init(&Base->Pos_MotorRB.Pos_PID,0.5,0,0,5000,0,5000,5000);
+	PID_Init(&Base->Pos_MotorRB.Speed_PID,5,0,0,5000,0,5000,5000);
+	Base->Pos_MotorLB.Motor_Num=3;
+	PID_Init(&Base->Pos_MotorLB.Pos_PID,0.5,0,0,5000,0,5000,5000);
+	PID_Init(&Base->Pos_MotorLB.Speed_PID,5,0,0,5000,0,5000,5000);
+	
+	
+	Base->Speed_MotorLF.Motor_Num=0;
+	PID_Init(&Base->Speed_MotorLF.Speed_PID,5,0,0,5000,0,5000,5000);
+	Base->Speed_MotorRF.Motor_Num=1;
+	PID_Init(&Base->Speed_MotorRF.Speed_PID,5,0,0,5000,0,5000,5000);
+	Base->Speed_MotorRB.Motor_Num=2;
+	PID_Init(&Base->Speed_MotorRB.Speed_PID,5,0,0,5000,0,5000,5000);
+	Base->Speed_MotorLB.Motor_Num=2;
+	PID_Init(&Base->Speed_MotorLB.Speed_PID,5,0,0,5000,0,5000,5000);
+	
+}
+void My_Motor_Analysis(ROBO_BASE *Base,uint8_t Motor_Num)
+{
+	switch (Motor_Num)
+	{
+		case 0:
+			My_Motor_control(&Base->Speed_MotorLF,&Base->Pos_MotorLF,RxData,TxData);
+		case 1:
+			My_Motor_control(&Base->Speed_MotorRF,&Base->Pos_MotorRF,RxData,TxData);
+		case 2:
+			My_Motor_control(&Base->Speed_MotorRB,&Base->Pos_MotorRB,RxData,TxData);
+		case 3:
+			My_Motor_control(&Base->Speed_MotorLB,&Base->Pos_MotorLB,RxData,TxData);
+		default :
+			break;
+	}
+}

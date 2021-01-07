@@ -75,7 +75,7 @@ void Usart_Init(void)
 	Uart1_Rx.Length_Max=USART1_RX_LEN_MAX;
 	HAL_UART_Receive_DMA(&huart1, Uart1_Rx.Buffer[0], USART1_RX_LEN_MAX);
 }
-void Motor_Tar(Speed_System *Speed,Pos_System *Pos)
+void My_Motor_Tar(Speed_System *Speed,Pos_System *Pos)
 {
 	switch (RC_CtrlData.rc.s1)
 	{
@@ -96,19 +96,19 @@ void Motor_Tar(Speed_System *Speed,Pos_System *Pos)
 			break;
 	}
 }
-void Motor_control(Speed_System *Speed,Pos_System *Pos,uint8_t *RxData,uint8_t *TxData)
+void My_Motor_control(Speed_System *Speed,Pos_System *Pos,uint8_t *RxData,uint8_t *TxData)
 {
 	switch (RC_CtrlData.rc.s1)
 	{
 		case 1:
-			Motor_Tar(Speed,Pos);
-			My_Motor_Speed_Analysis(Speed,RxData);
+			My_Motor_Tar(Speed,Pos);
+			My_Speed_Info_Analysis(Speed,RxData);
 			PID_Speed_Cal(Speed,TxData);
 			Send_To_Motor(&hcan1,TxData);
 			break;
 		case 2:
-			Motor_Tar(Speed,Pos);
-			My_Motor_Pos_Analysis(Pos,RxData);
+			My_Motor_Tar(Speed,Pos);
+			My_Pos_Info_Analysis(Pos,RxData);
 			PID_Pos_Cal(Pos,TxData);
 			Send_To_Motor(&hcan1,TxData);
 			break;
