@@ -1,7 +1,6 @@
 #include "Remote.h"
 #include "stdlib.h"
 
-UART_RX_BUFFER Uart1_Rx;
 extern UART_HandleTypeDef huart1;
 extern uint16_t Motor_Num;
 RC_Ctl_t RC_CtrlData=
@@ -39,42 +38,6 @@ void RemoteDataProcess(uint8_t *pData)
 	RC_CtrlData.update = 1;	
 }
 
-void Uart_DMA_Process(UART_HandleTypeDef *huart,DMA_HandleTypeDef* hdma_usart_rx,UART_RX_BUFFER* Uart_Rx,void(*DataProcessFunc)(uint8_t *pData))
-{
-	uint8_t this_frame_len = 0;
-	
-	if((__HAL_UART_GET_FLAG(huart,UART_FLAG_IDLE) != RESET))  
-		{   
-			__HAL_DMA_DISABLE(hdma_usart_rx);
-			__HAL_UART_CLEAR_IDLEFLAG(huart);  
-			
-			this_frame_len = Uart_Rx->Length_Max - __HAL_DMA_GET_COUNTER(hdma_usart_rx);
-			if(Uart_Rx->Buffer_Num)
-			{
-				Uart_Rx->Buffer_Num = 0;
-				HAL_UART_Receive_DMA(huart, Uart_Rx->Buffer[0], Uart_Rx->Length_Max);
-				if(this_frame_len == Uart_Rx->Length_Max)
-					if(DataProcessFunc) DataProcessFunc(Uart_Rx->Buffer[1]);
-			}
-			else
-			{
-				Uart_Rx->Buffer_Num = 1;
-				HAL_UART_Receive_DMA(huart, Uart_Rx->Buffer[1], Uart_Rx->Length_Max);
-				if(this_frame_len == Uart_Rx->Length_Max)	
-					if(DataProcessFunc) DataProcessFunc(Uart_Rx->Buffer[0]);
-			}
-		}
-}
-
-void Usart_Init(void)
-{
-	Uart1_Rx.Buffer[0]=(uint8_t*)malloc(sizeof(uint8_t)*USART1_RX_LEN_MAX);//USART1_RX_LEN_MAX==18
-	Uart1_Rx.Buffer[1]=(uint8_t*)malloc(sizeof(uint8_t)*USART1_RX_LEN_MAX);//USART1_RX_LEN_MAX==18
-	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
-	Uart1_Rx.Buffer_Num = 0;
-	Uart1_Rx.Length_Max=USART1_RX_LEN_MAX;
-	HAL_UART_Receive_DMA(&huart1, Uart1_Rx.Buffer[0], USART1_RX_LEN_MAX);
-}
 void My_Motor_Tar(Speed_System *Speed,Pos_System *Pos)
 {
 	switch (RC_CtrlData.rc.s1)

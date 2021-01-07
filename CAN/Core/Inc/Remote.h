@@ -65,8 +65,6 @@ typedef struct
 }UART_RX_BUFFER;
 
 void RemoteDataProcess(uint8_t *pData);
-void Uart_DMA_Process(UART_HandleTypeDef *huart,DMA_HandleTypeDef* hdma_usart_rx,UART_RX_BUFFER* Uart_Rx,void(*DataProcessFunc)(uint8_t *pData));
-void Usart_Init(void);
 void My_Motor_control(Speed_System *Speed,Pos_System *Pos,uint8_t *RxData,uint8_t *TxData);
 	
 #endif

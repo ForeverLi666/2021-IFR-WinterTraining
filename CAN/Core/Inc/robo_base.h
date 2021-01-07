@@ -113,23 +113,10 @@ typedef struct TX_BUFFER			//上下位机通信结构体
 //---------------------------------//
 
 //-------------函数声明------------//
-void Motor_Pos_Analysis(ROBO_BASE* Robo,uint8_t* RX_Data,uint32_t Motor_Num);				//位置环电机数据分析的接口函数
-void Pos_Info_Analysis(Motor_Pos_Info* Motor,uint8_t* RX_Data);								//位置环电机数据分析的操作函数
-
-void Motor_Speed_Analysis(ROBO_BASE* Robo,uint8_t* RX_Data,uint32_t Motor_Num);				//速度环电机数据分析的接口函数
-void Speed_Info_Analysis(Motor_Speed_Info* Motor,uint8_t* RX_Data);							//速度环电机数据分析的操作函数
-
-void SystemIO_Usart_ToString(int32_t System_Out,int32_t System_In);							//系统输入输入输出值转化成字符的函数
-
-void PID_Init(PID *pid, float Kp, float Ki, float Kd, float error_max, float dead_line, float intergral_max, float output_max);		//PID参数初始化函数
-void BASE_Init(ROBO_BASE *Robo);																									//底盘PID参数初始化的接口函数
-
-void PID_General_Cal(PID *pid, float fdbV, float tarV,uint8_t moto_num,uint8_t *Tx_msg);	//PID计算函数----为了向下兼容
-void PID_Speed_Cal(Speed_System* Speed_Motor,uint8_t *Tx_msg);								//速度环系统PID计算函数
-void PID_Pos_Cal(Pos_System* Pos_Motor,uint8_t *Tx_msg);									//位置环系统PID计算函数
-
-void PID_Send(ROBO_BASE* Robo);																//PID发送函数
-void Send_To_Motor(CAN_HandleTypeDef *hcan,uint8_t* Tx_Data);								//CAN通信发送函数
+void PID_Init(PID *pid, float Kp, float Ki, float Kd, float error_max, float dead_line, float intergral_max, float output_max);							
+void PID_Speed_Cal(Speed_System* Speed_Motor,uint8_t *Tx_msg);								
+void PID_Pos_Cal(Pos_System* Pos_Motor,uint8_t *Tx_msg);								
+void Send_To_Motor(CAN_HandleTypeDef *hcan,uint8_t* Tx_Data);							
 void My_Speed_Info_Analysis(Speed_System* Speed,uint8_t *RxData);
 void My_Pos_Info_Analysis(Pos_System *Pos,uint8_t *RxData);
 void My_Base_Init(ROBO_BASE *Base);
