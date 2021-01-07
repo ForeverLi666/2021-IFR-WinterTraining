@@ -3,7 +3,7 @@
 <title>Static Call Graph - [CAN\CAN.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image CAN\CAN.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Jan 08 00:06:42 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Jan 08 00:13:02 2021
 <BR><P>
 <H3>Maximum Stack Usage =        168 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -961,8 +961,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b5]"></a>My_Motor_Analysis</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, robo_base.o(i.My_Motor_Analysis))
-<BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = My_Motor_Analysis &rArr; My_Motor_control &rArr; Send_To_Motor &rArr; HAL_CAN_AddTxMessage
+<P><STRONG><a name="[b5]"></a>My_Motor_Analysis</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, robo_base.o(i.My_Motor_Analysis))
+<BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = My_Motor_Analysis &rArr; My_Motor_control &rArr; Send_To_Motor &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;My_Motor_control
 </UL>
@@ -1055,7 +1055,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f405xx.o(.text)
 </UL>
 <P><STRONG><a name="[26]"></a>TIM2_IRQHandler</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, stm32f4xx_it.o(i.TIM2_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = TIM2_IRQHandler &rArr; My_Motor_Analysis &rArr; My_Motor_control &rArr; Send_To_Motor &rArr; HAL_CAN_AddTxMessage
+<BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = TIM2_IRQHandler &rArr; My_Motor_Analysis &rArr; My_Motor_control &rArr; Send_To_Motor &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;My_Motor_Analysis

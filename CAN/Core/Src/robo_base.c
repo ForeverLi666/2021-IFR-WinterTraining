@@ -228,12 +228,16 @@ void My_Motor_Analysis(ROBO_BASE *Base,uint16_t Motor_Num)
 	{
 		case 0x201:
 			My_Motor_control(&Base->Speed_MotorLF,&Base->Pos_MotorLF,RxData,TxData);
+			break;
 		case 0x202:
 			My_Motor_control(&Base->Speed_MotorRF,&Base->Pos_MotorRF,RxData,TxData);
+			break;
 		case 0x203:
 			My_Motor_control(&Base->Speed_MotorRB,&Base->Pos_MotorRB,RxData,TxData);
+			break;
 		case 0x204:
 			My_Motor_control(&Base->Speed_MotorLB,&Base->Pos_MotorLB,RxData,TxData);
+			break;
 		default :
 			break;
 	}
