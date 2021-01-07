@@ -1,8 +1,8 @@
 can\tim.o: ../Core/Src/tim.c
-can\tim.o: ../Core/Inc/tim.h
-can\tim.o: ../Core/Inc/main.h
+can\tim.o: ..\Core\Inc\tim.h
+can\tim.o: ..\Core\Inc\main.h
 can\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-can\tim.o: ../Core/Inc/stm32f4xx_hal_conf.h
+can\tim.o: ..\Core\Inc\stm32f4xx_hal_conf.h
 can\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
 can\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 can\tim.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h

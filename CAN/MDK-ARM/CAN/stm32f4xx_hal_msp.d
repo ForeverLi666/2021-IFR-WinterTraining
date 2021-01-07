@@ -1,7 +1,7 @@
 can\stm32f4xx_hal_msp.o: ../Core/Src/stm32f4xx_hal_msp.c
-can\stm32f4xx_hal_msp.o: ../Core/Inc/main.h
+can\stm32f4xx_hal_msp.o: ..\Core\Inc\main.h
 can\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-can\stm32f4xx_hal_msp.o: ../Core/Inc/stm32f4xx_hal_conf.h
+can\stm32f4xx_hal_msp.o: ..\Core\Inc\stm32f4xx_hal_conf.h
 can\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
 can\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 can\stm32f4xx_hal_msp.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h

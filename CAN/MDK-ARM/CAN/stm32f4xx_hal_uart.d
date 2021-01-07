@@ -1,6 +1,6 @@
 can\stm32f4xx_hal_uart.o: ../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c
 can\stm32f4xx_hal_uart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-can\stm32f4xx_hal_uart.o: ../Core/Inc/stm32f4xx_hal_conf.h
+can\stm32f4xx_hal_uart.o: ..\Core\Inc\stm32f4xx_hal_conf.h
 can\stm32f4xx_hal_uart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
 can\stm32f4xx_hal_uart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 can\stm32f4xx_hal_uart.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h

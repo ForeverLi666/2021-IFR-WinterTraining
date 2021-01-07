@@ -1,8 +1,8 @@
 can\iwdg.o: ../Core/Src/iwdg.c
-can\iwdg.o: ../Core/Inc/iwdg.h
-can\iwdg.o: ../Core/Inc/main.h
+can\iwdg.o: ..\Core\Inc\iwdg.h
+can\iwdg.o: ..\Core\Inc\main.h
 can\iwdg.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-can\iwdg.o: ../Core/Inc/stm32f4xx_hal_conf.h
+can\iwdg.o: ..\Core\Inc\stm32f4xx_hal_conf.h
 can\iwdg.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
 can\iwdg.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 can\iwdg.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h

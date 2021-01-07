@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F405xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\PID</IncludePath>
+              <IncludePath>..\Core\Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -393,11 +393,6 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
-              <FileName>robo_base.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\PID\robo_base.c</FilePath>
-            </File>
-            <File>
               <FileName>Remote.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\Remote.c</FilePath>
@@ -446,6 +441,11 @@
               <FileName>stm32f4xx_hal_msp.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f4xx_hal_msp.c</FilePath>
+            </File>
+            <File>
+              <FileName>robo_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\robo_base.c</FilePath>
             </File>
           </Files>
         </Group>

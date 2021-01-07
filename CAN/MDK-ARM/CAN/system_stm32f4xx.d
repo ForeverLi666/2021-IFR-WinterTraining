@@ -9,7 +9,7 @@ can\system_stm32f4xx.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 can\system_stm32f4xx.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 can\system_stm32f4xx.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 can\system_stm32f4xx.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-can\system_stm32f4xx.o: ../Core/Inc/stm32f4xx_hal_conf.h
+can\system_stm32f4xx.o: ..\Core\Inc\stm32f4xx_hal_conf.h
 can\system_stm32f4xx.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
 can\system_stm32f4xx.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 can\system_stm32f4xx.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
