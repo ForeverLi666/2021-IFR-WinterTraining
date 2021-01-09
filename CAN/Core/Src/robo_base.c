@@ -1,16 +1,15 @@
 
 //---------头文件引用部分---------//
+#include "robo_base.h"
 #include "Remote.h"
-#include "can.h"
 //--------------------------------//
 
 //---------变量声明部分-----------//
 uint8_t TxData[8];
-CAN_RxHeaderTypeDef RxMessage;
-uint16_t Motor_Num;
 //--------------------------------//
 //---------外部变量声明部分-------//
 extern CAN_HandleTypeDef hcan1;
+extern RC_Ctl_t RC_CtrlData;
 //--------------------------------//
 
 /**********************************************************电机pid控制系统****************************************************************************************************/
@@ -32,64 +31,6 @@ void PID_Init(PID *pid, float Kp, float Ki, float Kd, float error_max, float dea
 	pid->derivative = 0;            
 	pid->output = 0;                  
 }
-void PID_Pos_Cal(Pos_System* Pos_Motor,uint8_t *Tx_msg)       
-{
-	Pos_Motor->Pos_PID.error =  Pos_Motor->Tar_Pos - Pos_Motor->Info.Abs_Angle;
-	if(Pos_Motor->Pos_PID.error > Pos_Motor->Pos_PID.error_max)
-		Pos_Motor->Pos_PID.error = Pos_Motor->Pos_PID.error_max;
-	if(Pos_Motor->Pos_PID.error < -Pos_Motor->Pos_PID.error_max)
-		Pos_Motor->Pos_PID.error = -Pos_Motor->Pos_PID.error_max;
-	if(Pos_Motor->Pos_PID.error > 0 && Pos_Motor->Pos_PID.error < Pos_Motor->Pos_PID.dead_line)
-		Pos_Motor->Pos_PID.error = 0;
-	if(Pos_Motor->Pos_PID.error < 0 && Pos_Motor->Pos_PID.error > Pos_Motor->Pos_PID.dead_line)
-		Pos_Motor->Pos_PID.error = 0;
-	
-	Pos_Motor->Pos_PID.intergral = Pos_Motor->Pos_PID.intergral + Pos_Motor->Pos_PID.error;
-	if(Pos_Motor->Pos_PID.intergral > Pos_Motor->Pos_PID.intergral_max)
-		Pos_Motor->Pos_PID.intergral = Pos_Motor->Pos_PID.intergral_max;
-	if(Pos_Motor->Pos_PID.intergral < -Pos_Motor->Pos_PID.intergral_max)
-		Pos_Motor->Pos_PID.intergral = -Pos_Motor->Pos_PID.intergral_max;
-	
-	Pos_Motor->Pos_PID.derivative = Pos_Motor->Pos_PID.error - Pos_Motor->Pos_PID.error_last;
-	Pos_Motor->Pos_PID.error_last = Pos_Motor->Pos_PID.error;
-	
-	Pos_Motor->Pos_PID.output = Pos_Motor->Pos_PID.Kp*Pos_Motor->Pos_PID.error + Pos_Motor->Pos_PID.Ki*Pos_Motor->Pos_PID.intergral + Pos_Motor->Pos_PID.Kd*Pos_Motor->Pos_PID.derivative;
-	
-	if(Pos_Motor->Pos_PID.output > Pos_Motor->Pos_PID.output_max)
-		Pos_Motor->Pos_PID.output = Pos_Motor->Pos_PID.output_max;
-	if(Pos_Motor->Pos_PID.output < -Pos_Motor->Pos_PID.output_max)
-		Pos_Motor->Pos_PID.output = -Pos_Motor->Pos_PID.output_max;
-	
-		Pos_Motor->Speed_PID.error =  Pos_Motor->Pos_PID.output - Pos_Motor->Info.Speed;
-	if(Pos_Motor->Speed_PID.error > Pos_Motor->Speed_PID.error_max)
-		Pos_Motor->Speed_PID.error = Pos_Motor->Speed_PID.error_max;
-	if(Pos_Motor->Speed_PID.error < -Pos_Motor->Speed_PID.error_max)
-		Pos_Motor->Speed_PID.error = -Pos_Motor->Speed_PID.error_max;
-	if(Pos_Motor->Speed_PID.error > 0 && Pos_Motor->Speed_PID.error < Pos_Motor->Speed_PID.dead_line)
-		Pos_Motor->Speed_PID.error = 0;
-	if(Pos_Motor->Speed_PID.error < 0 && Pos_Motor->Speed_PID.error > Pos_Motor->Speed_PID.dead_line)
-		Pos_Motor->Speed_PID.error = 0;
-	
-	Pos_Motor->Speed_PID.intergral = Pos_Motor->Speed_PID.intergral + Pos_Motor->Speed_PID.error;
-	if(Pos_Motor->Speed_PID.intergral > Pos_Motor->Speed_PID.intergral_max)
-		Pos_Motor->Speed_PID.intergral = Pos_Motor->Speed_PID.intergral_max;
-	if(Pos_Motor->Speed_PID.intergral < -Pos_Motor->Speed_PID.intergral_max)
-		Pos_Motor->Speed_PID.intergral = -Pos_Motor->Speed_PID.intergral_max;
-	
-	Pos_Motor->Speed_PID.derivative = Pos_Motor->Speed_PID.error - Pos_Motor->Speed_PID.error_last;
-	Pos_Motor->Speed_PID.error_last = Pos_Motor->Speed_PID.error;
-	
-	Pos_Motor->Speed_PID.output = Pos_Motor->Speed_PID.Kp*Pos_Motor->Speed_PID.error + Pos_Motor->Speed_PID.Ki*Pos_Motor->Speed_PID.intergral + Pos_Motor->Speed_PID.Kd*Pos_Motor->Speed_PID.derivative;
-	
-	if(Pos_Motor->Speed_PID.output > Pos_Motor->Speed_PID.output_max)
-		Pos_Motor->Speed_PID.output = Pos_Motor->Speed_PID.output_max;
-	if(Pos_Motor->Speed_PID.output < -Pos_Motor->Speed_PID.output_max)
-		Pos_Motor->Speed_PID.output = -Pos_Motor->Speed_PID.output_max;
-
-	
-	Tx_msg[Pos_Motor->Motor_Num*2]=((int16_t)Pos_Motor->Speed_PID.output)>>8;Tx_msg[Pos_Motor->Motor_Num*2+1]=(int16_t)Pos_Motor->Speed_PID.output;
-}
-
 void PID_Speed_Cal(Speed_System* Speed_Motor,uint8_t *Tx_msg)
 {
 
@@ -147,26 +88,8 @@ void My_Speed_Info_Analysis(Speed_System *Speed,uint8_t *RxData)
 	Speed->Info.Current=RxData[4];Speed->Info.Current<<=8;Speed->Info.Current|=RxData[5];
 	Speed->Info.Temperature=RxData[6];
 }
-void My_Pos_Info_Analysis(Pos_System *Pos,uint8_t *RxData)
+void My_Info_Receive(ROBO_BASE *Base,uint8_t *RxData,uint16_t Motor_Num)
 {
-	int16_t Error;
-	Pos->Info.Angle=RxData[0];Pos->Info.Angle<<=8;Pos->Info.Angle|=RxData[1];
-	Pos->Info.Speed=RxData[2];Pos->Info.Speed<<=8;Pos->Info.Speed|=RxData[3];
-	Pos->Info.Current=RxData[4];Pos->Info.Current<<=8;Pos->Info.Current|=RxData[5];
-	Pos->Info.Temperature=RxData[6];
-	if(Pos->Info.Speed!=0)
-	{
-		Error=Pos->Info.Angle-Pos->Info.Last_Angle;
-		Pos->Info.Abs_Angle+=Error;
-		if (Error < -4096)Pos->Info.Abs_Angle += 8192;
-    else if (Error > 4096)Pos->Info.Abs_Angle -= 8192;
-	}
-		Pos->Info.Last_Angle=Pos->Info.Angle;
-}
-void My_Info_Receive(ROBO_BASE *Base,uint8_t *RxData)
-{
-	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&RxMessage,RxData);
-	Motor_Num=RxMessage.StdId;
 	switch (Motor_Num) 
 	{
 		case 0x201:
@@ -196,6 +119,44 @@ void My_Base_Init(ROBO_BASE *Base)
 	Base->Speed_MotorLB.Motor_Num=3;
 	PID_Init(&Base->Speed_MotorLB.Speed_PID,5,0,0,5000,0,5000,5000);
 	
+}
+void My_Speed_Limit(float Tar_Speed)
+{
+	if(Tar_Speed>5000)
+	{
+		Tar_Speed=5000;
+	}else if(Tar_Speed<-5000)
+	{
+		Tar_Speed=-5000;
+	}
+}
+void My_Motor_Tar(Speed_System *Speed)
+{
+	switch (Speed->Motor_Num)
+	{
+		case 0:
+			Speed->Tar_Speed=(RC_CtrlData.rc.ch1-1024)*5-(RC_CtrlData.rc.ch0-1024)*5;
+			My_Speed_Limit(Speed->Tar_Speed);
+			break;
+		case 1:
+			Speed->Tar_Speed=-(RC_CtrlData.rc.ch1-1024)*5-(RC_CtrlData.rc.ch0-1024)*5;
+			My_Speed_Limit(Speed->Tar_Speed);
+			break;
+		case 2:
+			Speed->Tar_Speed=-(RC_CtrlData.rc.ch1-1024)*5+(RC_CtrlData.rc.ch0-1024)*5;
+			My_Speed_Limit(Speed->Tar_Speed);
+			break;
+		case 3:
+			Speed->Tar_Speed=(RC_CtrlData.rc.ch1-1024)*5+(RC_CtrlData.rc.ch0-1024)*5;
+			My_Speed_Limit(Speed->Tar_Speed);
+			break;
+	}
+}
+void My_Motor_Control(Speed_System *Speed,uint8_t *TxData)
+{
+		My_Motor_Tar(Speed);
+		PID_Speed_Cal(Speed,TxData);
+		Send_To_Motor(&hcan1,TxData);
 }
 void My_Motor_Interface(ROBO_BASE *Base)
 {

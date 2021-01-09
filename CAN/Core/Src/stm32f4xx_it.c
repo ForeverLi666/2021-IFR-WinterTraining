@@ -23,12 +23,14 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "math.h"
+#include "robo_base.h"
+#include "Remote.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-#include "math.h"
-#include "Remote.h"
+
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -45,6 +47,8 @@
 /* USER CODE BEGIN PV */
 uint8_t RxData[8];
 uint8_t Rx_buffer[18];
+CAN_RxHeaderTypeDef RxMessage;
+uint16_t Motor_Num;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -212,7 +216,9 @@ void CAN1_RX0_IRQHandler(void)
 {
   /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
 	HAL_IWDG_Refresh(&hiwdg);
-	My_Info_Receive(&Base,RxData);
+	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&RxMessage,RxData);
+	Motor_Num=RxMessage.StdId;
+	My_Info_Receive(&Base,RxData,Motor_Num);
   /* USER CODE END CAN1_RX0_IRQn 0 */
   HAL_CAN_IRQHandler(&hcan1);
   /* USER CODE BEGIN CAN1_RX0_IRQn 1 */
@@ -240,7 +246,7 @@ void TIM2_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-	HAL_UART_Receive(&huart1,Rx_buffer,18,1000);
+	HAL_UART_Receive_DMA(&huart1,Rx_buffer,18);
 	RemoteDataProcess(Rx_buffer); 
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);

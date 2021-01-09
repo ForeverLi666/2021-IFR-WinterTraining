@@ -41,4 +41,3 @@ can\main.o: ..\Core\Inc\usart.h
 can\main.o: ..\Core\Inc\gpio.h
 can\main.o: ..\Core\Inc\Remote.h
 can\main.o: ..\Core\Inc\robo_base.h
-can\main.o: D:\MDK5\ARM\ARMCC\Bin\..\include\math.h

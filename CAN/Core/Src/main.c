@@ -29,6 +29,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Remote.h"
+#include "robo_base.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

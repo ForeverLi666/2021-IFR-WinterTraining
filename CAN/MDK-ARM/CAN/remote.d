@@ -34,7 +34,3 @@ can\remote.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 can\remote.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 can\remote.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 can\remote.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-can\remote.o: ..\Core\Inc\robo_base.h
-can\remote.o: D:\MDK5\ARM\ARMCC\Bin\..\include\math.h
-can\remote.o: ..\Core\Inc\can.h
-can\remote.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdlib.h
