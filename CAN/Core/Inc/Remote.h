@@ -65,7 +65,8 @@ typedef struct
 }UART_RX_BUFFER;
 
 void RemoteDataProcess(uint8_t *pData);
-void My_Motor_control(Speed_System *Speed,Pos_System *Pos,uint8_t *RxData,uint8_t *TxData);
+void My_Motor_Tar(Speed_System *Speed);
+void My_Motor_Control(Speed_System *Speed,uint8_t *TxData);
 	
 #endif
 

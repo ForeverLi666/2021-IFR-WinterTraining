@@ -43,10 +43,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-CAN_RxHeaderTypeDef RxMessage;
 uint8_t RxData[8];
-uint8_t TxData[8];
-uint16_t Motor_Num;
 uint8_t Rx_buffer[18];
 /* USER CODE END PV */
 
@@ -61,14 +58,13 @@ uint8_t Rx_buffer[18];
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
-/* USER CODE BEGIN EV */
-extern ROBO_BASE Base;
-extern IWDG_HandleTypeDef hiwdg;
 extern CAN_HandleTypeDef hcan1;
 extern TIM_HandleTypeDef htim2;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern UART_HandleTypeDef huart1;
+/* USER CODE BEGIN EV */
+extern ROBO_BASE Base;
+extern IWDG_HandleTypeDef hiwdg;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -216,8 +212,7 @@ void CAN1_RX0_IRQHandler(void)
 {
   /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
 	HAL_IWDG_Refresh(&hiwdg);
-	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&RxMessage,RxData);
-	Motor_Num=RxMessage.StdId;
+	My_Info_Receive(&Base,RxData);
   /* USER CODE END CAN1_RX0_IRQn 0 */
   HAL_CAN_IRQHandler(&hcan1);
   /* USER CODE BEGIN CAN1_RX0_IRQn 1 */
@@ -231,7 +226,7 @@ void CAN1_RX0_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-	My_Motor_Analysis(&Base,Motor_Num);
+	My_Motor_Interface(&Base);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */

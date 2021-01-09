@@ -38,53 +38,27 @@ void RemoteDataProcess(uint8_t *pData)
 	RC_CtrlData.update = 1;	
 }
 
-void My_Motor_Tar(Speed_System *Speed,Pos_System *Pos)
+void My_Motor_Tar(Speed_System *Speed)
 {
-	switch (RC_CtrlData.rc.s1)
+	switch (Speed->Motor_Num)
 	{
+		case 0:
+			Speed->Tar_Speed=(RC_CtrlData.rc.ch1-1024)*5-(RC_CtrlData.rc.ch0-1024)*5;
+			break;
 		case 1:
-			switch (Motor_Num)
-			{
-				case 0x201:
-					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5-(RC_CtrlData.rc.ch1-1024)*5;
-					break;
-				case 0x202:
-					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5+(RC_CtrlData.rc.ch1-1024)*5;
-					break;
-				case 0x203:
-					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5-(RC_CtrlData.rc.ch1-1024)*5;
-					break;
-				case 0x204:
-					Speed->Tar_Speed=(RC_CtrlData.rc.ch0-1024)*5+(RC_CtrlData.rc.ch1-1024)*5;
-					break;
-				default:
-					break;
-			}
+			Speed->Tar_Speed=-(RC_CtrlData.rc.ch1-1024)*5-(RC_CtrlData.rc.ch0-1024)*5;
 			break;
 		case 2:
-			Pos->Tar_Pos=(RC_CtrlData.rc.ch1-1024)*10;
+			Speed->Tar_Speed=-(RC_CtrlData.rc.ch1-1024)*5+(RC_CtrlData.rc.ch0-1024)*5;
 			break;
-		default:
+		case 3:
+			Speed->Tar_Speed=(RC_CtrlData.rc.ch1-1024)*5+(RC_CtrlData.rc.ch0-1024)*5;
 			break;
 	}
 }
-void My_Motor_control(Speed_System *Speed,Pos_System *Pos,uint8_t *RxData,uint8_t *TxData)
+void My_Motor_Control(Speed_System *Speed,uint8_t *TxData)
 {
-	switch (RC_CtrlData.rc.s1)
-	{
-		case 1:
-			My_Motor_Tar(Speed,Pos);
-			My_Speed_Info_Analysis(Speed,RxData);
-			PID_Speed_Cal(Speed,TxData);
-			Send_To_Motor(&hcan1,TxData);
-			break;
-		case 2:
-			My_Motor_Tar(Speed,Pos);
-			My_Pos_Info_Analysis(Pos,RxData);
-			PID_Pos_Cal(Pos,TxData);
-			Send_To_Motor(&hcan1,TxData);
-			break;
-		default:
-			break;
-	}
+		My_Motor_Tar(Speed);
+		PID_Speed_Cal(Speed,TxData);
+		Send_To_Motor(&hcan1,TxData);
 }

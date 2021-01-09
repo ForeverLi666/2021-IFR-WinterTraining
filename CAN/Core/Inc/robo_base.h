@@ -120,7 +120,8 @@ void Send_To_Motor(CAN_HandleTypeDef *hcan,uint8_t* Tx_Data);
 void My_Speed_Info_Analysis(Speed_System* Speed,uint8_t *RxData);
 void My_Pos_Info_Analysis(Pos_System *Pos,uint8_t *RxData);
 void My_Base_Init(ROBO_BASE *Base);
-void My_Motor_Analysis(ROBO_BASE *Base,uint16_t Motor_Num);
+void My_Info_Receive(ROBO_BASE *Base,uint8_t *RxData);
+void My_Motor_Interface(ROBO_BASE *Base);
 //---------------------------------//
 #endif
 
