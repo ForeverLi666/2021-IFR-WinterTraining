@@ -95,7 +95,7 @@ int main(void)
   MX_CAN1_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
-//  MX_IWDG_Init();
+	MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 	__HAL_TIM_CLEAR_FLAG(&htim2,TIM_IT_UPDATE);
 	HAL_TIM_Base_Start_IT(&htim2);

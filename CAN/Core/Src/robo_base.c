@@ -156,7 +156,6 @@ void My_Motor_Control(Speed_System *Speed,uint8_t *TxData)
 {
 		My_Motor_Tar(Speed);
 		PID_Speed_Cal(Speed,TxData);
-		Send_To_Motor(&hcan1,TxData);
 }
 void My_Motor_Interface(ROBO_BASE *Base)
 {
@@ -164,5 +163,6 @@ void My_Motor_Interface(ROBO_BASE *Base)
 	My_Motor_Control(&Base->Speed_MotorRF,TxData);
 	My_Motor_Control(&Base->Speed_MotorRB,TxData);
 	My_Motor_Control(&Base->Speed_MotorLB,TxData);
+	Send_To_Motor(&hcan1,TxData);
 }
 
