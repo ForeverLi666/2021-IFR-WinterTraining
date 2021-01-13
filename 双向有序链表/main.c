@@ -1,4 +1,3 @@
-#include <stdio.h> 
 #include <stdlib.h>
 #include "_Linked_List.h"
 int main()
@@ -47,10 +46,13 @@ int main()
 				system("cls");
 				break;
 			case 5:
-				Link(list1,list2,&New_list);
+				Link(&list1,&list2,&New_list);
 				system("cls");
 				break;
 		}
 	}
+	Free(&list1);
+	Free(&list2);
+	Free(&New_list);
 	return 0;
 }

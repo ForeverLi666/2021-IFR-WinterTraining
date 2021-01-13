@@ -14,5 +14,5 @@ void add(List *plist,int number);
 void Print(List *plist);
 void cut(List *plist,int number);
 void Free(List *list);
-void Link(List list1,List list2,List *New_plist);
+void Link(List *plist1,List *plist2,List *New_plist);
 #endif

@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "_Linked_List.h"
+int t=0; ;
 void add(List *plist,int number)
 {
 	Node *p=(Node*)malloc(sizeof(Node));
@@ -11,17 +11,21 @@ void add(List *plist,int number)
 	p->next=NULL;
 	if(plist->tail)
 	{
-		if(p->value>=plist->tail->value)
+		if(p->value>plist->tail->value)
 		{
 			plist->tail->next=p;
 			p->prior=plist->tail;
 			plist->tail=p;
 		}
-		else
+		else if(p->value<plist->tail->value)
 		{
 			for(q1,q=plist->head;q;q1=q,q=q->next) 
 			{
-				if(p->value<=q->value)
+				if(p->value==q->value)
+				{
+					break; 
+				}
+				if(p->value<q->value)
 				{
 					if(q1)
 					{
@@ -105,102 +109,32 @@ void Free(List *list)
 		free(p);
 	}
 }
-void Link(List list1,List list2,List *New_plist)
+void Link(List *plist1,List *plist2,List *New_plist)
 {
-	if(list1.head->value<=list2.head->value)
+	if(plist1->head->value<=plist2->head->value)
 	{
-		New_plist->head=list1.head;
-		Node *p=list1.head;
-		Node *p1=list1.head->next;
-		Node *p2=list2.head;
-		while(p1&&p2)
+		Node *p1=plist1->head;
+		Node *p2=plist2->head;
+		for(p1;p1;p1=p1->next)
 		{
-			if(p1->value<p2->value)
-			{
-				p->next=p1;
-				p1->prior=p;
-				p=p1;
-				p1=p1->next;
-			}
-			else if(p1->value>p2->value)
-			{
-				p->next=p2;
-				p2->prior=p;
-				p=p2;
-				p2=p2->next;
-			}
-			else if(p1->value=p2->value)
-			{
-				p->next=p1;
-				p1->prior=p;
-				p=p1;
-				p1=p1->next;
-				p2=p2->next;
-			}
+			add(New_plist,p1->value);
 		}
-		while(p1==NULL&&p2!=NULL)
+		for(p2;p2;p2=p2->next)
 		{
-			p->next=p2;
-			p2->prior=p;
-			p=p2;
-			p2=p2->next;
-			New_plist->tail=p2;		
-		}
-		while(p2==NULL&&p1!=NULL)
-		{
-			p->next=p1;
-			p1->prior=p;
-			p=p1;
-			p1=p1->next;
-			New_plist->tail=p1;
+			add(New_plist,p2->value);
 		}
 	}
-	else
+	else if(plist1->head->value>plist2->head->value)
 	{
-		New_plist->head=list2.head;
-		Node *p=list2.head;
-		Node *p2=list2.head->next;
-		Node *p1=list1.head;
-		while(p1&&p2)
+		Node *p1=plist1->head;
+		Node *p2=plist2->head;
+		for(p2;p2;p2=p2->next)
 		{
-			if(p1->value<p2->value)
-			{
-				p->next=p1;
-				p1->prior=p;
-				p=p1;
-				p1=p1->next;
-			}
-			else if(p1->value>p2->value)
-			{
-				p->next=p2;
-				p2->prior=p;
-				p=p2;
-				p2=p2->next;
-			}
-			else if(p1->value=p2->value)
-			{
-				p->next=p1;
-				p1->prior=p;
-				p=p1;
-				p1=p1->next;
-				p2=p2->next;
-			}
+			add(New_plist,p2->value);
 		}
-		while(p1==NULL&&p2!=NULL)
+		for(p1;p1;p1=p1->next)
 		{
-			p->next=p2;
-			p2->prior=p;
-			p=p2;
-			p2=p2->next;
-			New_plist->tail=p2;		
-		}
-		while(p2==NULL&&p1!=NULL)
-		{
-			p->next=p1;
-			p1->prior=p;
-			p=p1;
-			p1=p1->next;
-			New_plist->tail=p1;
+			add(New_plist,p1->value);
 		}
 	}
-} 
+}
